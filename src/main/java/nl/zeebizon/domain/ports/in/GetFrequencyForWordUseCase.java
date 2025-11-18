@@ -1,5 +1,5 @@
 package nl.zeebizon.domain.ports.in;
 
 public interface GetFrequencyForWordUseCase {
-    int getFrequencyForWord(String word);
+    int getFrequencyForWord(String text, String word);
 }
