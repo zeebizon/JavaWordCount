@@ -1,4 +1,4 @@
-package nl.zeebizon.domain.ports.in;
+package nl.zeebizon.domain;
 
 import nl.zeebizon.domain.entities.WordFrequency;
 

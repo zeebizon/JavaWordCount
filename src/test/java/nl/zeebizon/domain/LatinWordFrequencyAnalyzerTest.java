@@ -1,7 +1,5 @@
 package nl.zeebizon.domain;
 
-import nl.zeebizon.domain.ports.in.WordFrequencyAnalyzer;
-
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 

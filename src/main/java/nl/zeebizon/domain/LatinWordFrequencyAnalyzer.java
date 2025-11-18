@@ -2,7 +2,6 @@ package nl.zeebizon.domain;
 
 import nl.zeebizon.domain.entities.WordFrequency;
 import nl.zeebizon.domain.entities.WordFrequencyRecord;
-import nl.zeebizon.domain.ports.in.WordFrequencyAnalyzer;
 
 import java.util.HashMap;
 import java.util.List;
