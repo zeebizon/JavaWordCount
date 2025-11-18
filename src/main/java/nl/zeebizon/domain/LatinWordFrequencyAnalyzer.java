@@ -16,6 +16,9 @@ public class LatinWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
     // Delimit everything that's not a latin letter (a-zA-Z)
     private static final Pattern DELIMITER = Pattern.compile("[^a-zA-Z]+");
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int calculateHighestFrequency(String text) {
         if (text == null || text.isBlank())
@@ -27,6 +30,9 @@ public class LatinWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
                 .orElse(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int calculateFrequencyForWord(String text, String word) {
         if (text == null || text.isBlank() || word == null || word.isBlank())
@@ -37,6 +43,9 @@ public class LatinWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
                 .getOrDefault(word, 0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<WordFrequency> calculateMostFrequentNWords(String text, int n) {
         if (text == null || text.isBlank() || n == 0)
