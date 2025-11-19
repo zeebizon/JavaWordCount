@@ -93,6 +93,7 @@ jobs:
     needs: deploy-staging
     steps:
       - *gcpauth
+      - run: gcloud config set project ${GCP_PROJECT_ID}
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
