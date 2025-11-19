@@ -9,6 +9,7 @@
         <compiler-plugin.version>3.14.1</compiler-plugin.version>
         <assertj.version>3.24.2</assertj.version>
         <jacoco.version>0.8.11</jacoco.version>
+        <jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
         <lombok.version>1.18.42</lombok.version>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -113,6 +114,24 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <limits>
+                                        <limit>
+                                            <minimum>${jacoco.minimum.coverage}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
