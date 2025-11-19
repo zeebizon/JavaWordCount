@@ -1,5 +1,6 @@
 package nl.zeebizon.domain;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import nl.zeebizon.domain.entities.WordFrequency;
 import nl.zeebizon.domain.entities.WordFrequencyRecord;
 
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 
 import static java.util.Comparator.comparingInt;
 
+@ApplicationScoped
 public class LatinWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
 
     // Delimit everything that's not a latin letter (a-zA-Z)

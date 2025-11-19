@@ -1,0 +1,1 @@
+http POST http://127.0.0.1:8080/words/fox/frequency/ text='The quick brown fox jumps over the lazy dog. The dog barked back at the fox.'
