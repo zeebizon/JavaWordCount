@@ -13,17 +13,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
-class AnalysisAPITest {
+class AnalysisAPIImplTest {
     @InjectMock
     AnalysisService analysisService;
 
     @Inject
-    AnalysisAPI analysisAPI;
+    AnalysisAPIImpl analysisAPIImpl;
 
     @Test
     void mostCommonWordFrequency() {
         when(analysisService.getHighestFrequency(anyString())).thenReturn(0);
-        var response = analysisAPI.mostCommonWordFrequency(new MostCommonWordFrequencyRequest("any string"));
+        var response = analysisAPIImpl.mostCommonWordFrequency(new MostCommonWordFrequencyRequest("any string"));
         assertThat(response)
                 .isInstanceOf(MostCommonWordFrequencyResponse.class)
                 .extracting("frequency")
@@ -34,7 +34,7 @@ class AnalysisAPITest {
     @Test
     void frequencyForWordRequest() {
         when(analysisService.getFrequencyForWord(anyString(), anyString())).thenReturn(0);
-        var response = analysisAPI.frequencyForWordRequest(new FrequencyForWordRequest("Some sample text"), "sample");
+        var response = analysisAPIImpl.frequencyForWordRequest(new FrequencyForWordRequest("Some sample text"), "sample");
         assertThat(response)
                 .isInstanceOf(FrequencyForWordResponse.class)
                 .extracting("frequency", "word")
@@ -45,7 +45,7 @@ class AnalysisAPITest {
     @Test
     void mostCommonWords() {
         when(analysisService.getMostFrequentWords(anyString(), anyInt())).thenReturn(List.of());
-        var response = analysisAPI.mostCommonWords(new MostCommonWordsRequest("Some sample text"), 3);
+        var response = analysisAPIImpl.mostCommonWords(new MostCommonWordsRequest("Some sample text"), 3);
         assertThat(response)
                 .isInstanceOf(MostCommonWordsResponse.class)
                 .extracting("wordFrequencies")
