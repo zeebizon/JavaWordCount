@@ -72,10 +72,9 @@ public class LatinWordFrequencyAnalyzer implements WordFrequencyAnalyzer {
 
     private static Map<String, Integer> mapWordFrequencies(String text) {
         var wordCounts = new HashMap<String, Integer>();
-        // Stream the words, filter empty words, and count them in wordCounts
+        // Stream the words, and count them in wordCounts
         DELIMITER.splitAsStream(text)
                 .map(String::toLowerCase)
-                .filter(word -> !word.isBlank())
                 .forEach(word -> wordCounts.merge(word, 1, Integer::sum));
         return wordCounts;
     }
