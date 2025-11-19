@@ -1,7 +1,7 @@
 # WordCountService
 
 A RESTful API service for analyzing word frequencies in text.  
-Provides endpoints to get the most common word, the frequency of a specific word, and the top N most common words.
+Provides endpoints to get the frequency of the most common word, the frequency of a specific word, and the top N most common words and their frequencies.
 
 > This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
