@@ -100,10 +100,7 @@ jobs:
       - *gcpauth
       - run: gcloud config set project ${GCP_PROJECT_ID}
       - run: |
-          export BASE_URL=$(gcloud run services describe ${SERVICE} --region ${REGION} --format "value(status.traffic.url)")
-          echo "BASE_URL = $BASE_URL"
-      - run: |
-          echo "BASE_URL = $BASE_URL"
+          export BASE_URL=$(gcloud run services describe $***SERVICE*** --region $***REGION*** --format "value(status.traffic.url)")
           cd e2e
           npm install
           npx playwright test
