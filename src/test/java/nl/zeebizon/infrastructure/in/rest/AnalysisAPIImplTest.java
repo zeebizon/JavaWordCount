@@ -1,10 +1,6 @@
 package nl.zeebizon.infrastructure.in.rest;
 
-import io.quarkus.test.InjectMock;
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 import nl.zeebizon.application.AnalysisService;
-import nl.zeebizon.domain.WordFrequencyAnalyzer;
 import nl.zeebizon.infrastructure.in.rest.dto.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

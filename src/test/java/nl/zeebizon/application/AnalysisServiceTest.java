@@ -3,9 +3,6 @@ package nl.zeebizon.application;
 
 import nl.zeebizon.domain.WordFrequencyAnalyzer;
 
-import io.quarkus.test.InjectMock;
-import io.quarkus.test.junit.QuarkusTest;
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
