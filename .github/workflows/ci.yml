@@ -13,18 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - &setupjava
-        - uses: actions/setup-java@v3
-          with:
-            distribution: temurin
-            java-version: 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
 
       - &cachemaven
-        - uses: actions/cache@v3
-          with:
-            path: ~/.m2/repository
-            key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-            restore-keys: |
-              ${{ runner.os }}-maven-
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - run: mvn clean install -B -DskipTests=true
       - uses: actions/upload-artifact@v3
         with:
