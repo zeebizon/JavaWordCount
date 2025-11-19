@@ -1,6 +1,10 @@
 package nl.zeebizon.domain;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import static org.assertj.core.api.Assertions.*;
 
 class LatinWordFrequencyAnalyzerTest {
@@ -18,16 +22,11 @@ class LatinWordFrequencyAnalyzerTest {
         assertThat(result).isEqualTo(3); // the
     }
 
-    @Test
-    void calculateHighestFrequency_WithEmptyText() {
-        var result = analyzer.calculateHighestFrequency("");
-        assertThat(result).isEqualTo(0);
-    }
-
-    @Test
-    void calculateHighestFrequency_WithNullText() {
-        var result = analyzer.calculateHighestFrequency(null);
-        assertThat(result).isEqualTo(0);
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = { " .\t\n" })
+    void calculateHighestFrequency_WithEmptyText(String text) {
+        assertThat(analyzer.calculateHighestFrequency(text)).isEqualTo(0);
     }
 
     /**
@@ -50,34 +49,18 @@ class LatinWordFrequencyAnalyzerTest {
         assertThat(result).isEqualTo(0);
     }
 
-    @Test
-    void calculateFrequencyForWord_WithEmptyText() {
-        int result = analyzer.calculateFrequencyForWord("", "quick");
-        assertThat(result).isEqualTo(0);
-
-        result = analyzer.calculateFrequencyForWord(" .\t\n", "quick");
-        assertThat(result).isEqualTo(0);
-
-        result = analyzer.calculateFrequencyForWord(null, "quick");
-        assertThat(result).isEqualTo(0);
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = { " .\t\n" })
+    void calculateFrequencyForWord_WithEmptyText(String text) {
+        assertThat(analyzer.calculateFrequencyForWord(text, "quick")).isEqualTo(0);
     }
 
-    @Test
-    void calculateFrequencyForWord_WithEmptyWord() {
-        int result = analyzer.calculateFrequencyForWord("quick", "");
-        assertThat(result).isEqualTo(0);
-
-        result = analyzer.calculateFrequencyForWord("quick", " .\t\n");
-        assertThat(result).isEqualTo(0);
-
-        result = analyzer.calculateFrequencyForWord("quick", null);
-        assertThat(result).isEqualTo(0);
-    }
-
-    @Test
-    void calculateFrequencyForWord_WithNullText() {
-        int result = analyzer.calculateFrequencyForWord(null, "quick");
-        assertThat(result).isEqualTo(0);
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = { " .\t\n" })
+    void calculateFrequencyForWord_WithEmptyWord(String text) {
+        assertThat(analyzer.calculateFrequencyForWord("The quick fox", text)).isEqualTo(0);
     }
 
     /**
@@ -106,16 +89,11 @@ class LatinWordFrequencyAnalyzerTest {
         assertThat(result.get(1).getWord()).isEqualTo("lake");
     }
 
-    @Test
-    void calculateMostFrequentNWords_WithEmptyText() {
-        var result = analyzer.calculateMostFrequentNWords("", 3);
-        assertThat(result).isEmpty();
-
-        result = analyzer.calculateMostFrequentNWords("   ", 3);
-        assertThat(result).isEmpty();
-
-        result = analyzer.calculateMostFrequentNWords(null, 3);
-        assertThat(result).isEmpty();
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = { " .\t\n" })
+    void calculateMostFrequentNWords_WithEmptyText(String text) {
+        assertThat(analyzer.calculateMostFrequentNWords(text, 3)).isEmpty();
     }
 
     @Test
