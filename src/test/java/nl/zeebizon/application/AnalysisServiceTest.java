@@ -1,14 +1,15 @@
 package nl.zeebizon.application;
 
+
+import nl.zeebizon.domain.WordFrequencyAnalyzer;
+
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import nl.zeebizon.domain.WordFrequencyAnalyzer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest

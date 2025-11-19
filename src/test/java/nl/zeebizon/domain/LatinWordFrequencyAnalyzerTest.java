@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class LatinWordFrequencyAnalyzerTest {
 
-    WordFrequencyAnalyzer analyzer = new LatinWordFrequencyAnalyzer();
+    final WordFrequencyAnalyzer analyzer = new LatinWordFrequencyAnalyzer();
 
     /**
      * Tests for calculateHighestFrequency

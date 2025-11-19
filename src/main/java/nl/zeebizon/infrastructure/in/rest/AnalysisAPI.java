@@ -4,10 +4,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import nl.zeebizon.application.AnalysisService;
-import nl.zeebizon.domain.entities.WordFrequency;
 import nl.zeebizon.infrastructure.in.rest.dto.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Path("/words")
