@@ -124,5 +124,5 @@ jobs:
             --region ${REGION} \
             --remove-tags staging
           for rev in ${OLD_REVISIONS}; do
-            gcloud run revisions delete $rev --region europe-west1 --quiet
+            gcloud run revisions delete $rev --region ${REGION} --quiet
           done
