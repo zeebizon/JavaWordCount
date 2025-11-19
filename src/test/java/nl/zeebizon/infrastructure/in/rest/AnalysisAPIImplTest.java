@@ -4,20 +4,26 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import nl.zeebizon.application.AnalysisService;
+import nl.zeebizon.domain.WordFrequencyAnalyzer;
 import nl.zeebizon.infrastructure.in.rest.dto.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@QuarkusTest
+@ExtendWith(MockitoExtension.class)
 class AnalysisAPIImplTest {
-    @InjectMock
+
+    @Mock
     AnalysisService analysisService;
 
-    @Inject
+    @InjectMocks
     AnalysisAPIImpl analysisAPIImpl;
 
     @Test

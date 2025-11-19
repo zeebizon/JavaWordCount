@@ -17,7 +17,7 @@ class LatinWordFrequencyAnalyzerTest {
 
     @Test
     void calculateHighestFrequency_WithValidText() {
-        var text = "The quick brown fox jumps over the lazy dog. The fox is quick.";
+        var text = "The quick brown fox jumps over the lazy dog. The fox is quick. Extra .  space.";
         var result = analyzer.calculateHighestFrequency(text);
         assertThat(result).isEqualTo(3); // the
     }
