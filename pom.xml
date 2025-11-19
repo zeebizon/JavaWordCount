@@ -8,6 +8,7 @@
     <properties>
         <compiler-plugin.version>3.14.1</compiler-plugin.version>
         <assertj.version>3.24.2</assertj.version>
+        <failsafe.version>3.1.2</failsafe.version>
         <jacoco.version>0.8.11</jacoco.version>
         <jacoco.minimum.coverage>0.90</jacoco.minimum.coverage>
         <lombok.version>1.18.42</lombok.version>
@@ -99,6 +100,19 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${failsafe.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
@@ -116,7 +130,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>check</id>
+                        <id>checkCoverage</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
@@ -126,6 +140,8 @@
                                 <rule>
                                     <limits>
                                         <limit>
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
                                             <minimum>${jacoco.minimum.coverage}</minimum>
                                         </limit>
                                     </limits>
