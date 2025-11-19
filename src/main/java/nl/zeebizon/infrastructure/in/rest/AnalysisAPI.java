@@ -5,9 +5,7 @@ import jakarta.ws.rs.core.MediaType;
 import lombok.RequiredArgsConstructor;
 import nl.zeebizon.application.AnalysisService;
 import nl.zeebizon.domain.entities.WordFrequency;
-import nl.zeebizon.infrastructure.in.rest.dto.FrequencyForWordRequest;
-import nl.zeebizon.infrastructure.in.rest.dto.MostCommonWordFrequencyRequest;
-import nl.zeebizon.infrastructure.in.rest.dto.MostCommonWordsRequest;
+import nl.zeebizon.infrastructure.in.rest.dto.*;
 
 import java.util.List;
 
@@ -21,21 +19,24 @@ public class AnalysisAPI {
 
     @POST
     @Path("/most-common/frequency/")
-    public Integer mostCommonWordFrequency(MostCommonWordFrequencyRequest request) {
-        return service.getHighestFrequency(request.text());
+    public MostCommonWordFrequencyResponse mostCommonWordFrequency(MostCommonWordFrequencyRequest request) {
+        var frequency = service.getHighestFrequency(request.text());
+        return new MostCommonWordFrequencyResponse(frequency);
     }
 
     @POST
     @Path("/{word}/frequency")
-    public Integer frequencyForWordRequest(FrequencyForWordRequest request,
+    public FrequencyForWordResponse frequencyForWordRequest(FrequencyForWordRequest   request,
                                            @PathParam("word") String word) {
-        return service.getFrequencyForWord(request.text(), word);
+        var frequency = service.getFrequencyForWord(request.text(), word);
+        return new FrequencyForWordResponse(word, frequency);
     }
 
     @POST
     @Path("/most-common/{n}")
-    public List<WordFrequency> mostCommonWords(MostCommonWordsRequest request,
-                                    @PathParam("n") Integer n) {
-        return service.getMostFrequentWords(request.text(), n);
+    public MostCommonWordsResponse mostCommonWords(MostCommonWordsRequest  request,
+                                                   @PathParam("n") Integer n) {
+        var wordFrequencies = service.getMostFrequentWords(request.text(), n);
+        return new MostCommonWordsResponse(wordFrequencies);
     }
 }
