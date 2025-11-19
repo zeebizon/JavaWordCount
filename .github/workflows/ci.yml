@@ -1,0 +1,128 @@
+name: CICD
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  IMAGE_NAME: wordcountservice
+  IMAGE_TAG: latest
+  REGION: europe-west1
+  SERVICE: wordcountservice
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - &setupjava
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+      - &cachemaven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - run: mvn clean install -B -DskipTests=true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: built-artifacts
+          path: |
+            target/
+            Dockerfile
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - *setupjava
+      - *cachemaven
+      - uses: actions/download-artifact@v4
+        with:
+          name: built-artifacts
+      - run: mvn verify -B
+      - uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/*.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: failsafe-reports
+          path: target/failsafe-reports/*.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: built-artifacts
+      - &gcpauth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - run: gcloud config set project ${GCP_PROJECT_ID}
+
+      - run: |
+          gcloud auth configure-docker --quiet
+          docker build -t gcr.io/${GCP_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG} .
+          docker push gcr.io/${GCP_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
+
+      - run: |
+          gcloud run deploy ${SERVICE} \
+            --image=gcr.io/${GCP_PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG} \
+            --platform=managed \
+            --region=${REGION} \
+            --allow-unauthenticated \
+            --no-traffic \
+            --tag=staging
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - *gcpauth
+      - run: gcloud config set project ${GCP_PROJECT_ID}
+      - run: |
+          export BASE_URL=$(gcloud run services describe ${SERVICE} --region ${REGION} --format "value(status.traffic.url)")
+          cd e2e
+          npm install
+          npx playwright test
+  reroute-production:
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+    steps:
+      - *gcpauth
+      - run: gcloud config set project ${GCP_PROJECT_ID}
+      - run: |
+          export NEW_REVISION=$(gcloud run revisions list \
+            --limit 1 \
+            --region ${REGION} \
+            --format 'value(name)')
+          export OLD_REVISIONS=$(gcloud run revisions list \
+            --filter="metadata.name!=${NEW_REVISION}" \
+            --region ${REGION} \
+            --format="value(metadata.name)")
+          gcloud run services update-traffic ${SERVICE} \
+            --to-revisions ${NEW_REVISION}=100 \
+            --region ${REGION} \
+            --remove-tags staging
+          for rev in ${OLD_REVISIONS}; do
+            gcloud run revisions delete $rev --region europe-west1 --quiet
+          done
