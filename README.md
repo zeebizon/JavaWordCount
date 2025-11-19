@@ -20,6 +20,7 @@ Provides endpoints to get the frequency of the most common word, the frequency o
 You can run the service locally using Docker.
 
 ```bash
+mvn install
 docker build -t wordcountservice:latest .
 docker run -p 8080:8080 wordcountservice:latest
 ```
